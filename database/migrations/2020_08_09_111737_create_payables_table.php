@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupsTable extends Migration
+class CreatePayablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('payables', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('group_name');
-            $table->string('address');
-            $table->string('cooks_name')->nullable();
-            $table->string('shopping_type');
-            $table->string('meal_type');
-            $table->boolean('is_admin')->nullable();
+            $table->integer('group_id');
+            $table->integer('electricity_gas_water');
+            $table->integer('others');
+            $table->integer('meal_advanced');
+            $table->integer('house_rent');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('payables');
     }
 }

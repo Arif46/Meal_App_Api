@@ -21,4 +21,12 @@ Route::post('/login','AuthController@login');
  Route::middleware('auth:api')->group( function () {
 
     Route::post('/groupCreate','MainController@groupcreate');
+
+    Route::post('/postMonthsCreate','MainController@postmonthscreate');
+    Route::post('/preeMonthsCreate','MainController@createpreemonths');
+    Route::post('/payables','MainController@payablescreate');
+    Route::post('/dailyMealInput','MainController@postmealinputcreate');
+    Route::post('/GroupMembercreate','MainController@groupmemberinsert');
+    Route::post('/usermealcreate','MainController@insertusermeal');
+      
 });
