@@ -56,6 +56,7 @@ class AuthController extends Controller
                 $images->save('Userimage/'.$pathImage.$nameReplacer);
             }
             else{
+
                 $imageNames  = $pathImage.$nameReplacer;
                 $images->save('Userimage/'.$pathImage.$nameReplacer);
             }         
@@ -88,7 +89,7 @@ class AuthController extends Controller
         
         $loginData = $request->validate([
             'phone_number' => 'required|string',
-            'password' => 'required'
+            'password' => 'required|string'
         ]);
 
         if(!auth()->attempt($loginData)) {
