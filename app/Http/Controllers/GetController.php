@@ -40,12 +40,25 @@ class GetController extends Controller
 
     public function getpayables($group_id)
     {
+     try{
+        $payablesfor = Payable::where('group_id',$group_id)->get();
         $payables = Payable::where('group_id',$group_id)->get();
-        if(sizeof($payables) > 0) {
-            return response()->json(['Payables' => $payables],200);
-        }else{
-            return response()->json(['message' =>'No Data Found!'],400);
-        }
+        $first=$payables[0]->electricity_gas_water;
+        $secount=$payables[0]->others;
+        $third=$payables[0]->meal_advanced;
+        $four=$payables[0]->house_rent;
+        $totalsum=$first+$secount+$third+$four;
+        return response()->json(['success'=>'true','payables'=>$payablesfor,'totalPayables'=>$totalsum],200);
+
+     }catch(\Exception $e){
+        return response()->json(['success'=>'false','payables'=>'null','totalPayables' =>'null'],400);
+     }
+        
+     
+     
+      
+
+     
 
     }
     public function getusermealdate($date)
