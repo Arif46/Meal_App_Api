@@ -12,6 +12,7 @@ use App\DailyMealInput;
 use App\GroupMember;
 use App\UserMealDate;
 use App\User;
+use Image;
 
 class UpdateController extends Controller
 {
@@ -74,6 +75,62 @@ class UpdateController extends Controller
           return response()->json(['success' =>'false' ,'message' =>'Something Went Wrong!'],400);
       }
        
+
+      }
+
+      public function Updateuser(Request $request,$id)
+      {
+          $update=Validator::make($request->all(),[
+
+            'phone_number' => 'required|string|unique:users',
+            'full_name' => 'required|string',
+            'email' => 'required|string',
+            'notification_token' => 'sometimes|nullable|string',
+            'image'=>'required|image|mimes:jpg,png,jpeg|max:5000',
+          ]);
+
+          if($update->fails()){
+             return response()->json([$update->errors()],400);
+          }
+
+          $userUpdate = new User;
+          $imagesNames="";
+          $userUpdate=User::findOrFail($id);
+          $userUpdate->phone_number = $request->phone_number;
+          $userUpdate->full_name = $request->full_name;
+          $userUpdate->email = $request->email;
+          $userUpdate->notification_token = $request->notification_token;
+
+          if($file = $request->file("image")){
+            $images = Image::canvas(600, 600, '#fff');
+            $image  = Image::make($file->getRealPath())->resize(600, 600, function($constraint){
+                $constraint->aspectRatio();
+            });
+            $images->insert($image, 'center');
+            $pathImage = date("Y") . '/' . date("m") . '/'.'images/';
+            $pathImg = 'Userimage/'.date("Y") . '/' . date("m") . '/'.'images/';;
+            $nameReplacer = time().'-'.uniqid(). '.' . $file->getClientOriginalExtension();
+            if (!file_exists($pathImg)){
+                mkdir($pathImg, 0777, true);
+                $imageNames  = $pathImage.$nameReplacer;
+                $images->save('Userimage/'.$pathImage.$nameReplacer);
+            }
+            else{
+
+                $imageNames  = $pathImage.$nameReplacer;
+                $images->save('Userimage/'.$pathImage.$nameReplacer);
+            }         
+         $userUpdate->image = $imageNames;
+        }
+
+        if($userUpdate->save()){
+            return response()->json(['success' =>'true','message' =>'User Information update Successfully'],200);
+        }else{
+            return response()->json(['success' =>'false','message' =>'something went Wrong!'],400);
+        }
+        
+
+
 
       }
          

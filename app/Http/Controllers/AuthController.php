@@ -15,11 +15,11 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function register(Request $req)
     {
         $validator = Validator::make($req->all(), [
             'phone_number' => 'required|string|unique:users',
-            'password'   => 'required|string',
             'full_name' => 'required|string',
             'email' => 'required|string',
             'notification_token' => 'sometimes|nullable|string',
@@ -35,7 +35,6 @@ class AuthController extends Controller
         $imagesNames="";
 
         $user->phone_number=$req->phone_number;
-        $user->password=bcrypt($req->password);
         $user->full_name =$req->full_name;
         $user->email=$req->email;
         $user->notification_token=$req->notification_token;
@@ -66,7 +65,7 @@ class AuthController extends Controller
         //  $user->save();
       
         if($user->save()){
-            return response()->json(['success'=>'true','message'=>'Account Create Sucessfull'],200);
+            return response()->json(['success'=>'true','message'=>'Account Create Sucessfully'],200);
         }else{
             return response()->json(['success'=>'false','message'=>'something Went Wrong'],200);
         }
