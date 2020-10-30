@@ -11,6 +11,7 @@ use App\PreeMonthPricing;
 use App\DailyMealInput;
 use App\GroupMember;
 use App\UserMealDate;
+use App\Bazar;
 
 class MainController extends Controller
 {
@@ -39,7 +40,7 @@ class MainController extends Controller
         $group->is_admin =$req->is_admin;
 
         if($group->save()){
-            return response()->json(['success'=>true,'message'=>'group create sucessfully'],200);
+            return response()->json(['success'=>true,'group'=>$group,'message'=>'group create sucessfully'],200);
         }else{
             return response()->json(['sucess'=>false,'message'=>'something Went Wrong!'],400);
         }
@@ -232,6 +233,36 @@ class MainController extends Controller
     }else{
         return response()->json(['success' =>'false','message' =>'Something went Wrong!'],400);
     }
+
+    }
+
+    public function bazarcreate(Request $req)
+    {
+        $validator = Validator::make($req->all(),[
+            'group_id' => 'required|exists:groups,id',
+            'user_id' => 'required|exists:users,id',
+            'total_amount' =>'required',
+            'extra_bazar' =>'sometimes|nullable',
+        ]);
+
+       
+
+        if($validator->fails()){
+            return response()->json([$validator->errors()],400);
+        }
+
+        $bazaradd = new Bazar;
+
+        $bazaradd->group_id=$req->group_id;
+        $bazaradd->user_id = $req->user_id;
+        $bazaradd->total_amount = $req->total_amount;
+        $bazaradd->extra_bazar = $req->extra_bazar;
+
+      if($bazaradd->save()){
+         return response()->json(['success'=> 'true','message' =>'Bazar  Sucessfully Uploaded'],200);
+      }else{
+          return response()->json(['success' =>'false' ,'message' =>'Something Went Wrong!'],400);
+      } 
 
     }
 }

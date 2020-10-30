@@ -12,6 +12,7 @@ use App\DailyMealInput;
 use App\GroupMember;
 use App\UserMealDate;
 use App\User;
+use App\Bazar;
 use DB;
 
 class GetController extends Controller
@@ -83,23 +84,57 @@ class GetController extends Controller
 
     public function Searchgroup($keyword)
     {
-        // $group_search =Group::where('group_name','LIKE',"%{$keyword}")->with('group_member')
-        // ->get();
-        // return response()->json(['group_search' =>$group_search],200);
-     try{
-        $group_search = DB::table('groups')
-        ->join('group_members', 'groups.id', '=', 'group_members.group_id')
-        ->where('group_name','LIKE',"%{$keyword}")
-        ->select('groups.*', 'group_members.group_id', 'group_members.phone_number')
-        ->get();
-        $groupmembercount = $group_search->count();
-    return response()->json(['success'=>'true','group_members'=>$group_search,'Total_Member'=>$groupmembercount],200);    
+       
+        // try{
+        //     $group_search = DB::table('groups')
+        //     ->where('group_name','LIKE',"%{$keyword}")
+        //     ->join('group_members', 'groups.id', '=', 'group_members.group_id')
+        //     ->join('users','group_members.phone_number','=','users.phone_number')
+        //     ->select('groups.*', 'group_members.*','users.*')
+        //     ->get();
+        //     $groupmembercount = $group_search->count();
+        // return response()->json(['success'=>'true','group_members'=>$group_search,'Total_Member'=>$groupmembercount],200);    
+    
+        //  }catch(\Exception $e){
+        //     return response()->json(['error' => $e->getMessage()]);
+        //  }
 
-     }catch(\Exception $e){
-        return response()->json(['error' => $e->getMessage()]);
-     }
-        
+        $groupsearch=Group::where('group_name','LIKE',"%{$keyword}")->withCount('groupmember')->get();
+
+        if(sizeof($groupsearch) > 0){
+            return response()->json(['message'=>'true','groupsearch'=>$groupsearch],200);  
+        }else{
+            return response()->json(['message'=>'false','groupsearch'=>'group not created'],400);  
+        }
+      
 
     }
+
+    public function Membergroup($keyword)
+    {
+        $membersearch=GroupMember::where('phone_number','LIKE',"%{$keyword}")->with('Admininfo')->get();
+        if(sizeof($membersearch) > 0){
+            return response()->json(['message'=>'true','Member'=>$membersearch],200);  
+        }else{
+            return response()->json(['message'=>'false','groupsearch'=>'group member Not created'],400);  
+        }
+        
+    }
+
+    public function Getbazarlist($group_id)
+    {
+        $bazarlist=Bazar::where('group_id',$group_id)->get();
+        if(sizeof($bazarlist) > 0){
+
+            return response()->json(['Success'=>'true','bazarlist'=>$bazarlist],200);
+
+        }else{
+            return response()->json(['success'=>'false','message'=>'Something went Wrong'],400);
+        }
+     
+
+    }
+
+  
   
 }

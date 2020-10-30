@@ -21,9 +21,9 @@ class AuthController extends Controller
         $validator = Validator::make($req->all(), [
             'phone_number' => 'required|string|unique:users',
             'full_name' => 'required|string',
-            'email' => 'required|string',
+            'email' => 'sometimes|nullable|string',
             'notification_token' => 'sometimes|nullable|string',
-            'image'=>'required|image|mimes:jpg,png,jpeg|max:5000',
+            'image'=>'sometimes|nullable|image|mimes:jpg,png,jpeg|max:5000',
             
         ]);
         if ($validator->fails()) {

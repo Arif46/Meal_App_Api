@@ -35,7 +35,7 @@ class UpdateController extends Controller
       $update_paybles = New Payable;
       $update_paybles =Payable::findOrFail($id);
       $update_paybles->group_id = $request->group_id;
-      $update_paybles->electricity_gas_water =$request->others;
+      $update_paybles->electricity_gas_water =$request->electricity_gas_water;
       $update_paybles->meal_advanced=$request->meal_advanced;
       $update_paybles->house_rent = $request->house_rent;
 
@@ -80,56 +80,59 @@ class UpdateController extends Controller
 
       public function Updateuser(Request $request,$id)
       {
-          $update=Validator::make($request->all(),[
 
-            'phone_number' => 'required|string|unique:users',
-            'full_name' => 'required|string',
-            'email' => 'required|string',
-            'notification_token' => 'sometimes|nullable|string',
-            'image'=>'required|image|mimes:jpg,png,jpeg|max:5000',
-          ]);
+        try{
+            $update=Validator::make($request->all(),[
 
-          if($update->fails()){
-             return response()->json([$update->errors()],400);
-          }
-
-          $userUpdate = new User;
-          $imagesNames="";
-          $userUpdate=User::findOrFail($id);
-          $userUpdate->phone_number = $request->phone_number;
-          $userUpdate->full_name = $request->full_name;
-          $userUpdate->email = $request->email;
-          $userUpdate->notification_token = $request->notification_token;
-
-          if($file = $request->file("image")){
-            $images = Image::canvas(600, 600, '#fff');
-            $image  = Image::make($file->getRealPath())->resize(600, 600, function($constraint){
-                $constraint->aspectRatio();
-            });
-            $images->insert($image, 'center');
-            $pathImage = date("Y") . '/' . date("m") . '/'.'images/';
-            $pathImg = 'Userimage/'.date("Y") . '/' . date("m") . '/'.'images/';;
-            $nameReplacer = time().'-'.uniqid(). '.' . $file->getClientOriginalExtension();
-            if (!file_exists($pathImg)){
-                mkdir($pathImg, 0777, true);
-                $imageNames  = $pathImage.$nameReplacer;
-                $images->save('Userimage/'.$pathImage.$nameReplacer);
+                'email' => 'required|email',
+                'notification_token' => 'sometimes|nullable|string',
+                'image'=>'required|image|mimes:jpg,png,jpeg|max:5000',
+              ]);
+    
+              if($update->fails()){
+                 return response()->json([$update->errors()],400);
+              }
+    
+              $userUpdate = new User;
+              $imagesNames="";
+              $userUpdate=User::findOrFail($id);
+              $userUpdate->email = $request->email;
+              $userUpdate->notification_token = $request->notification_token;
+    
+              if($file = $request->file("image")){
+                $images = Image::canvas(600, 600, '#fff');
+                $image  = Image::make($file->getRealPath())->resize(600, 600, function($constraint){
+                    $constraint->aspectRatio();
+                });
+                $images->insert($image, 'center');
+                $pathImage = date("Y") . '/' . date("m") . '/'.'images/';
+                $pathImg = 'Userimage/'.date("Y") . '/' . date("m") . '/'.'images/';;
+                $nameReplacer = time().'-'.uniqid(). '.' . $file->getClientOriginalExtension();
+                if (!file_exists($pathImg)){
+                    mkdir($pathImg, 0777, true);
+                    $imageNames  = $pathImage.$nameReplacer;
+                    $images->save('Userimage/'.$pathImage.$nameReplacer);
+                }
+                else{
+    
+                    $imageNames  = $pathImage.$nameReplacer;
+                    $images->save('Userimage/'.$pathImage.$nameReplacer);
+                }         
+             $userUpdate->image = $imageNames;
             }
-            else{
+    
+            if($userUpdate->save()){
+                return response()->json(['success' =>'true','message' =>'User Information update Successfully'],200);
+            }else{
+                return response()->json(['success' =>'false','message' =>'something went Wrong!'],400);
+            }
+            
+    
 
-                $imageNames  = $pathImage.$nameReplacer;
-                $images->save('Userimage/'.$pathImage.$nameReplacer);
-            }         
-         $userUpdate->image = $imageNames;
-        }
-
-        if($userUpdate->save()){
-            return response()->json(['success' =>'true','message' =>'User Information update Successfully'],200);
-        }else{
-            return response()->json(['success' =>'false','message' =>'something went Wrong!'],400);
-        }
-        
-
+        }catch(\Exception $e){
+            return response()->json(['error' => 'No Data Found'],404);
+         }
+         
 
 
       }
