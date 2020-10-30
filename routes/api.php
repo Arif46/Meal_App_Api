@@ -27,6 +27,6 @@ Route::get('/getalluser','GetController@GetallUser');
 Route::get('/Group_search/{keyword}','GetController@Searchgroup');
 Route::get('/Member_search/{keyword}','GetController@Membergroup');
 
-//bazar
+//bazar add
 Route::post('/BazarInsert','MainController@bazarcreate');
 Route::get('/Bazarlist/{group_id}','GetController@Getbazarlist');
