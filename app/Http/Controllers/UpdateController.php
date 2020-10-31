@@ -12,6 +12,7 @@ use App\DailyMealInput;
 use App\GroupMember;
 use App\UserMealDate;
 use App\User;
+use App\Bazar;
 use Image;
 
 class UpdateController extends Controller
@@ -87,6 +88,7 @@ class UpdateController extends Controller
                 'email' => 'required|email',
                 'notification_token' => 'sometimes|nullable|string',
                 'image'=>'required|image|mimes:jpg,png,jpeg|max:5000',
+                'active_groupid'=>'sometimes|nullable',
               ]);
     
               if($update->fails()){
@@ -120,6 +122,7 @@ class UpdateController extends Controller
                 }         
              $userUpdate->image = $imageNames;
             }
+            $userUpdate->active_groupid=$request->active_groupid;
     
             if($userUpdate->save()){
                 return response()->json(['success' =>'true','message' =>'User Information update Successfully'],200);
@@ -134,6 +137,35 @@ class UpdateController extends Controller
          }
          
 
+
+      }
+
+
+
+      public function bazarupdate(Request $req,$id)
+      {
+        $validator = Validator::make($req->all(),[
+            'group_id' => 'required|exists:groups,id',
+            'user_id' => 'required|exists:users,id',
+            'total_amount' =>'required',
+            'extra_bazar' =>'sometimes|nullable',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([$validator->errors()],400);
+        }
+
+        $bazarUpdate=Bazar::find($id);
+        $bazarUpdate->group_id=$req->group_id;
+        $bazarUpdate->user_id = $req->user_id;
+        $bazarUpdate->total_amount = $req->total_amount;
+        $bazarUpdate->extra_bazar = $req->extra_bazar;
+
+      if($bazarUpdate->save()){
+         return response()->json(['success'=> 'true','message' =>'Bazar  Update Sucessfully Uploaded'],200);
+      }else{
+          return response()->json(['success' =>'false' ,'message' =>'Something Went Wrong!'],400);
+      } 
 
       }
          

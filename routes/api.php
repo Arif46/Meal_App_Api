@@ -30,3 +30,14 @@ Route::get('/Member_search/{keyword}','GetController@Membergroup');
 //bazar add
 Route::post('/BazarInsert','MainController@bazarcreate');
 Route::get('/Bazarlist/{group_id}','GetController@Getbazarlist');
+Route::post('/BazarUpdate/{id}','UpdateController@bazarupdate');
+//end bazar
+
+//getuserlist by groupid
+Route::get('/GetAllGroupUser/{group_id}','GetController@getallgroupuser');
+
+//group invitaion
+Route::post('/Groupinvitation','MainController@invitaioncreate');
+Route::get('/Senderinfo/{sender_id}','GetController@getsenderinfo');
+Route::get('/Receiverinfo/{receiver_id}','GetController@getreceiverinfo');
+Route::get('/GroupInviationStatusChange/{id}','GetController@getstatuschange');

@@ -12,6 +12,7 @@ use App\DailyMealInput;
 use App\GroupMember;
 use App\UserMealDate;
 use App\Bazar;
+use App\Inviation;
 
 class MainController extends Controller
 {
@@ -260,6 +261,34 @@ class MainController extends Controller
 
       if($bazaradd->save()){
          return response()->json(['success'=> 'true','message' =>'Bazar  Sucessfully Uploaded'],200);
+      }else{
+          return response()->json(['success' =>'false' ,'message' =>'Something Went Wrong!'],400);
+      } 
+
+    }
+
+    public function invitaioncreate(Request $req)
+    {
+
+        $validator = Validator::make($req->all(),[
+            'group_id' => 'required|exists:groups,id',
+            'sender_id' => 'required',
+            'receiver_id' =>'required',
+        ]);
+
+       
+        if($validator->fails()){
+            return response()->json([$validator->errors()],400);
+        }
+
+        $inviationadd = new Inviation;
+
+        $inviationadd->group_id=$req->group_id;
+        $inviationadd->sender_id = $req->sender_id;
+        $inviationadd->receiver_id = $req->receiver_id;
+
+      if($inviationadd->save()){
+         return response()->json(['success'=> 'true','message' =>' invited Sucessfully Added'],200);
       }else{
           return response()->json(['success' =>'false' ,'message' =>'Something Went Wrong!'],400);
       } 

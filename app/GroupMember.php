@@ -10,5 +10,9 @@ class GroupMember extends Model
  {
      return $this->hasMany('App\User','phone_number','phone_number');
  }
+ public function group()
+ {
+    return $this->hasMany('App\Group','id','group_id'); 
+ }
   
 }

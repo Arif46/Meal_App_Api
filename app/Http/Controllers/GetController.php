@@ -13,6 +13,7 @@ use App\GroupMember;
 use App\UserMealDate;
 use App\User;
 use App\Bazar;
+use App\Inviation;
 use DB;
 
 class GetController extends Controller
@@ -132,8 +133,57 @@ class GetController extends Controller
             return response()->json(['success'=>'false','message'=>'Something went Wrong'],400);
         }
      
+    }
+
+    public function getallgroupuser($group_id)
+    {
+        $AllGroupUser=GroupMember::where('group_id',$group_id)->with('group')->get();
+        if(sizeof($AllGroupUser) > 0){
+            return response()->json(['success'=>'true','AllGroupUser'=>$AllGroupUser],200);
+        }else{
+            return response()->json(['success'=>'false','message'=>'No Data Found'],400);
+        }
+    }
+
+    public function getsenderinfo($sender_id)
+    {
+        $senderinfo=Inviation::where('sender_id',$sender_id)->with('group')->get();
+        if(sizeof($senderinfo) > 0){
+            return response()->json(['Success'=>'true','Senderinfo'=>$senderinfo],200);
+        }else{
+            return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+        }
+        
 
     }
+    public function getreceiverinfo($receiver_id)
+    {
+        $Receiverinfo=Inviation::where('receiver_id',$receiver_id)->with('group')->get();
+        if(sizeof($Receiverinfo) > 0){
+            return response()->json(['Success'=>'true','Senderinfo'=>$Receiverinfo],200);
+        }else{
+            return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+        }
+
+    }
+
+    public function getstatuschange($id)
+    {
+        $Updatestatus=Inviation::find($id);
+        if($Updatestatus->status){
+            $Updatestatus->status = 0;
+        }else{
+            $Updatestatus->status = 1;
+        }
+        if($Updatestatus->save()){
+            return response()->json(['success'=>'Inviation status change Sucessfully'],200);
+        }else{
+            return response()->json(['error'=>'Inviation status change Unsucessfull'],400);
+        }
+       
+
+    }
+        
 
   
   
