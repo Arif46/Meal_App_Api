@@ -100,7 +100,7 @@ class GetController extends Controller
         //     return response()->json(['error' => $e->getMessage()]);
         //  }
 
-        $groupsearch=Group::where('group_name','LIKE',"%{$keyword}")->withCount('groupmember')->get();
+        $groupsearch=Group::where('group_name','LIKE',"%{$keyword}")->with('admin')->withCount('groupmember')->get();
 
         if(sizeof($groupsearch) > 0){
             return response()->json(['message'=>'true','groupsearch'=>$groupsearch],200);  
@@ -122,9 +122,12 @@ class GetController extends Controller
         
     }
 
-    public function Getbazarlist($group_id)
+    public function Getbazarlist(
+    $group_id,
+    $from,
+    $to )
     {
-        $bazarlist=Bazar::where('group_id',$group_id)->get();
+        $bazarlist=Bazar::where('group_id',$group_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->get();
         if(sizeof($bazarlist) > 0){
 
             return response()->json(['Success'=>'true','bazarlist'=>$bazarlist],200);
@@ -134,6 +137,25 @@ class GetController extends Controller
         }
      
     }
+    public function getallbazarlist(
+        $group_id,
+        $user_id,
+        $from,
+        $to
+    )
+    {
+        $allbazarlist=Bazar::where('group_id',$group_id)->where('user_id',$user_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->with('allpayables')->with('user_meal')->get();
+        
+        if (sizeof($allbazarlist) > 0) {
+
+            return response()->json(['Success'=>'true','Allbazarlist'=>$allbazarlist],200);
+
+        }else{
+            return response()->json(['success'=>'false','message'=>'Something went Wrong'],400);
+        }
+
+    }
+  
 
     public function getallgroupuser($group_id)
     {
@@ -181,6 +203,20 @@ class GetController extends Controller
             return response()->json(['error'=>'Inviation status change Unsucessfull'],400);
         }
        
+
+    }
+    public function getdailymealinput (
+    $group_id,
+    $from,
+    $to
+    )
+    {
+        $dailymealinputdata =DailyMealInput::where('group_id',$group_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->get();
+        if(sizeof($dailymealinputdata) > 0){
+            return response()->json(['Success'=>'true','Dailymealinputdata'=>$dailymealinputdata],200);
+        }else{
+            return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+        }
 
     }
         

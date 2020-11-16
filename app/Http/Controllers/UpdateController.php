@@ -37,6 +37,7 @@ class UpdateController extends Controller
       $update_paybles =Payable::findOrFail($id);
       $update_paybles->group_id = $request->group_id;
       $update_paybles->electricity_gas_water =$request->electricity_gas_water;
+      $update_paybles->others =$request->others;
       $update_paybles->meal_advanced=$request->meal_advanced;
       $update_paybles->house_rent = $request->house_rent;
 

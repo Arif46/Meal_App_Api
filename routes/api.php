@@ -26,10 +26,12 @@ Route::get('/UserMealDate/{date}','GetController@getusermealdate');
 Route::get('/getalluser','GetController@GetallUser');
 Route::get('/Group_search/{keyword}','GetController@Searchgroup');
 Route::get('/Member_search/{keyword}','GetController@Membergroup');
+Route::get('/Daily_meal_input/{group_id}/{from}/{to}','GetController@getdailymealinput');
 
 //bazar add
 Route::post('/BazarInsert','MainController@bazarcreate');
-Route::get('/Bazarlist/{group_id}','GetController@Getbazarlist');
+Route::get('/Bazarlist/{group_id}/{from}/{to}','GetController@Getbazarlist');
+Route::get('/GetAllBazarlist/{group_id}/{user_id}/{from}/{to}','GetController@getallbazarlist');
 Route::post('/BazarUpdate/{id}','UpdateController@bazarupdate');
 //end bazar
 
