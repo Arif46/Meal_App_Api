@@ -141,11 +141,12 @@ class GetController extends Controller
     }
     public function getallbazarlist(
         $group_id,
-        $user_id,
-        $date
+        $from,
+        $to
+
     )
     {
-        $allbazarlist=Bazar::where('group_id',$group_id)->where('user_id',$user_id)->whereDate('date', '=',date('Y-m-d'))->with('allpayables')->with('user_meal')->get();
+        $allbazarlist=Bazar::where('group_id',$group_id)->whereBetween('date', [$from.' 00:00:00',$to.' 23:59:59'])->with('allpayables')->with('user_meal')->with('DailyMealInput')->get();
         
         if (sizeof($allbazarlist) > 0) {
 
@@ -228,6 +229,14 @@ class GetController extends Controller
         }else{
             return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
         }
+
+    }
+
+    public function getinviationdatainfo(Request $request,$group_id)
+    {
+        $inviationdata=Inviation::where('group_id',$group_id)->where('sender_id',$request->sende_id)->get();
+
+       
 
     }
         

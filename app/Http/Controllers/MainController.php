@@ -178,8 +178,8 @@ class MainController extends Controller
     public function groupmemberinsert(Request $request)
     {
        $groupcreate = Validator::make($request->all(),[
-           'group_id' => 'required|exists:groups,id',
-           'phone_number' => 'required|exists:users,phone_number',
+           'group_id' => 'required|exists:groups,id|unique:groups,id',
+           'phone_number' => 'required|exists:users,phone_number|unique:users,phone_number',
         //    'default_input' =>'required|string',     
        ]);
 
@@ -276,6 +276,7 @@ class MainController extends Controller
             'group_id' => 'required|exists:groups,id',
             'sender_id' => 'required',
             'receiver_id' =>'required',
+            'date' =>'required|date_format:Y-m-d',
         ]);
 
        
@@ -288,6 +289,7 @@ class MainController extends Controller
         $inviationadd->group_id=$req->group_id;
         $inviationadd->sender_id = $req->sender_id;
         $inviationadd->receiver_id = $req->receiver_id;
+        $inviationadd->date = $req->date;
 
       if($inviationadd->save()){
          return response()->json(['success'=> 'true','message' =>' invited Sucessfully Added'],200);

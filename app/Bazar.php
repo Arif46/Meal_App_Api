@@ -14,4 +14,8 @@ class Bazar extends Model
     {
         return $this->hasMany('App\UserMealDate','group_id','group_id');
     }
+    public function DailyMealInput()
+    {
+        return $this->hasMany('App\DailyMealInput','group_id','group_id');
+    }
 }

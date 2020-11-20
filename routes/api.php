@@ -33,7 +33,7 @@ Route::get('/Daily_meal_input/{group_id}/{from}/{to}','GetController@getdailymea
 //bazar add
 Route::post('/BazarInsert','MainController@bazarcreate');
 Route::get('/Bazarlist/{group_id}/{from}/{to}','GetController@Getbazarlist');
-Route::get('/GetAllBazarlist/{group_id}/{user_id}/{from}/{to}','GetController@getallbazarlist');
+Route::get('/GetAllBazarlist/{group_id}/{from}/{to}','GetController@getallbazarlist');
 Route::post('/BazarUpdate/{id}','UpdateController@bazarupdate');
 //end bazar
 
@@ -49,3 +49,5 @@ Route::post('/Groupinvitation','MainController@invitaioncreate');
 Route::get('/Senderinfo/{sender_id}','GetController@getsenderinfo');
 Route::get('/Receiverinfo/{receiver_id}','GetController@getreceiverinfo');
 Route::get('/GroupInviationStatusChange/{id}','GetController@getstatuschange');
+
+Route::get('/Invitationdataget/{group_id}','GetController@getinviationdatainfo');
