@@ -18,7 +18,7 @@ class CreateBazarsTable extends Migration
             $table->integer('group_id');
             $table->integer('user_id');
             $table->integer('total_amount');
-            $table->string('extra_bazar')->nullable();
+            $table->date('date');
             $table->timestamps();
         });
     }

@@ -149,7 +149,7 @@ class UpdateController extends Controller
             'group_id' => 'required|exists:groups,id',
             'user_id' => 'required|exists:users,id',
             'total_amount' =>'required',
-            'extra_bazar' =>'sometimes|nullable',
+            'date' =>'required|date_format:Y-m-d',
         ]);
 
         if($validator->fails()){
@@ -160,7 +160,7 @@ class UpdateController extends Controller
         $bazarUpdate->group_id=$req->group_id;
         $bazarUpdate->user_id = $req->user_id;
         $bazarUpdate->total_amount = $req->total_amount;
-        $bazarUpdate->extra_bazar = $req->extra_bazar;
+        $bazarUpdate->date = $req->date;
 
       if($bazarUpdate->save()){
          return response()->json(['success'=> 'true','message' =>'Bazar  Update Sucessfully Uploaded'],200);
@@ -168,6 +168,35 @@ class UpdateController extends Controller
           return response()->json(['success' =>'false' ,'message' =>'Something Went Wrong!'],400);
       } 
 
+      }
+
+      public function profileupdate(Request $request,$id)
+      {
+
+        try{
+            $update=Validator::make($request->all(),[
+
+                'full_name' => 'required|string',
+              ]);
+    
+              if($update->fails()){
+                 return response()->json([$update->errors()],400);
+              }
+              $ProfileUpdate = new User;
+              $ProfileUpdate=User::findOrFail($id);
+             $ProfileUpdate->full_name=$request->full_name;
+    
+            if($ProfileUpdate->save()){
+                return response()->json(['success' =>'true','message' =>'Profile update Successfully'],200);
+            }else{
+                return response()->json(['success' =>'false','message' =>'something went Wrong!'],400);
+            }
+            
+    
+
+        }catch(\Exception $e){
+            return response()->json(['error' => 'No Data Found'],404);
+         }
       }
          
 

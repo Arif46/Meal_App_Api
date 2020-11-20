@@ -16,11 +16,12 @@ class CreateUserMealDatesTable extends Migration
         Schema::create('user_meal_dates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('group_id');
+            $table->integer('user_id');
             $table->string('phone_number');
             $table->date('meal_date');
-            $table->boolean('is_breakfast');
-            $table->boolean('is_lunch');
-            $table->boolean('is_dinner');
+            $table->boolean('is_breakfast')->nullable();
+            $table->boolean('is_lunch')->nullable();
+            $table->boolean('is_dinner')->nullable();
             $table->timestamps();
         });
     }

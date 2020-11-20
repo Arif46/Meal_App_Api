@@ -18,6 +18,8 @@ Route::post('/UpdatePayables/{id}','UpdateController@updatepayables');
 Route::post('/UpdateDailyMealInput/{id}','UpdateController@updatedailymealinput');
 Route::post('/UpdateUser/{id}','UpdateController@Updateuser');
 
+Route::post('/Profile_Update/{id}','UpdateController@profileupdate');
+
 
 Route::get('/UserInformation/{phone_number}','GetController@getuser');
 Route::get('/GroupMember/{group_id}','GetController@getgroupmember');
@@ -37,6 +39,10 @@ Route::post('/BazarUpdate/{id}','UpdateController@bazarupdate');
 
 //getuserlist by groupid
 Route::get('/GetAllGroupUser/{group_id}','GetController@getallgroupuser');
+
+//getallgroupuserphonenumber
+
+Route::get('/Getgroupuser/{phone_number}','GetController@getgroupuserphonenumber');
 
 //group invitaion
 Route::post('/Groupinvitation','MainController@invitaioncreate');

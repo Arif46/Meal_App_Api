@@ -13,7 +13,7 @@ class Group extends Model
    
     public function admin()
     {
-       return $this->hasMany('App\GroupMember','group_id','id'); 
+       return $this->hasMany('App\GroupMember','group_id','id');
     }
     public function groupmember()
     {

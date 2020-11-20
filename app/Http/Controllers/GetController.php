@@ -32,7 +32,7 @@ class GetController extends Controller
 
     public function getgroupmember($group_id)
     {
-      $group_list =GroupMember::where('group_id',$group_id)->get();
+      $group_list =GroupMember::where('group_id',$group_id)->with('Userinfo')->get();
       if(count($group_list) > 0){
           return response()->json(['GroupMembers' => $group_list],200);
       }else{
@@ -100,7 +100,9 @@ class GetController extends Controller
         //     return response()->json(['error' => $e->getMessage()]);
         //  }
 
-        $groupsearch=Group::where('group_name','LIKE',"%{$keyword}")->with('admin')->withCount('groupmember')->get();
+        $groupsearch=Group::where('group_name','LIKE',"%{$keyword}")->with(['admin' => function($query) {
+            return $query->select(['group_id','phone_number']);
+        }])->withCount('groupmember')->get();
 
         if(sizeof($groupsearch) > 0){
             return response()->json(['message'=>'true','groupsearch'=>$groupsearch],200);  
@@ -127,7 +129,7 @@ class GetController extends Controller
     $from,
     $to )
     {
-        $bazarlist=Bazar::where('group_id',$group_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->get();
+        $bazarlist=Bazar::where('group_id',$group_id)->whereBetween('date', [$from.' 00:00:00',$to.' 23:59:59'])->get();
         if(sizeof($bazarlist) > 0){
 
             return response()->json(['Success'=>'true','bazarlist'=>$bazarlist],200);
@@ -140,11 +142,10 @@ class GetController extends Controller
     public function getallbazarlist(
         $group_id,
         $user_id,
-        $from,
-        $to
+        $date
     )
     {
-        $allbazarlist=Bazar::where('group_id',$group_id)->where('user_id',$user_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->with('allpayables')->with('user_meal')->get();
+        $allbazarlist=Bazar::where('group_id',$group_id)->where('user_id',$user_id)->whereDate('date', '=',date('Y-m-d'))->with('allpayables')->with('user_meal')->get();
         
         if (sizeof($allbazarlist) > 0) {
 
@@ -214,6 +215,16 @@ class GetController extends Controller
         $dailymealinputdata =DailyMealInput::where('group_id',$group_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->get();
         if(sizeof($dailymealinputdata) > 0){
             return response()->json(['Success'=>'true','Dailymealinputdata'=>$dailymealinputdata],200);
+        }else{
+            return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+        }
+
+    }
+    public function getgroupuserphonenumber($phone_number)
+    {
+        $groupuser=GroupMember::where('phone_number',$phone_number)->with('GroupUser')->get();
+        if(sizeof($groupuser) > 0){
+            return response()->json(['Success'=>'true','GroupUser'=>$groupuser],200);
         }else{
             return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
         }

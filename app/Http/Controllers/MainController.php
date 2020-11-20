@@ -206,11 +206,12 @@ class MainController extends Controller
     {
       $user_meal = Validator::make($r->all(),[
        'group_id' => 'required|exists:groups,id',
+       'user_id' => 'required|exists:users,id',
        'phone_number' => 'required|exists:users,phone_number',
        'meal_date' =>'required|date_format:Y-m-d',
-       'is_breakfast' => 'required',
-       'is_lunch' =>'required',
-       'is_dinner' => 'required',
+       'is_breakfast' => 'sometimes|nullable',
+       'is_lunch' =>'sometimes|nullable',
+       'is_dinner' => 'sometimes|nullable',
       ]) ;
 
       if($user_meal->fails()){
@@ -221,6 +222,7 @@ class MainController extends Controller
       $user_meal = new UserMealDate();
 
       $user_meal->group_id=$r->group_id;
+      $user_meal->user_id=$r->user_id;
       $user_meal->phone_number=$r->phone_number;
       $user_meal->meal_date =$r->meal_date;
       $user_meal->is_breakfast =$r->is_breakfast;
@@ -243,7 +245,7 @@ class MainController extends Controller
             'group_id' => 'required|exists:groups,id',
             'user_id' => 'required|exists:users,id',
             'total_amount' =>'required',
-            'extra_bazar' =>'sometimes|nullable',
+            'date' =>'required|date_format:Y-m-d',
         ]);
 
        
@@ -257,7 +259,7 @@ class MainController extends Controller
         $bazaradd->group_id=$req->group_id;
         $bazaradd->user_id = $req->user_id;
         $bazaradd->total_amount = $req->total_amount;
-        $bazaradd->extra_bazar = $req->extra_bazar;
+        $bazaradd->date = $req->date;
 
       if($bazaradd->save()){
          return response()->json(['success'=> 'true','message' =>'Bazar  Sucessfully Uploaded'],200);
