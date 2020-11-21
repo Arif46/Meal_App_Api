@@ -12,4 +12,16 @@ class Inviation extends Model
     {
         return $this->hasMany('App\Group','id','group_id');
     }
+    public function groupinfo()
+    {
+        return $this->hasMany('App\Group','id','group_id');
+    }
+    public function SenderInfo()
+    {
+        return $this->hasMany('App\User','id','sender_id');
+    }
+    public function ReceiverInfo()
+    {
+        return $this->hasMany('App\User','id','receiver_id');
+    }
 }

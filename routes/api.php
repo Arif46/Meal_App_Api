@@ -50,4 +50,4 @@ Route::post('/Groupinvitation','MainController@invitaioncreate');
 // Route::get('/Receiverinfo/{receiver_id}','GetController@getreceiverinfo');
 Route::get('/GroupInviationStatusUpdate/{id}','GetController@getstatuschange');
 
-Route::get('/Invitationdataget/{group_id}/{sender_id}/{receiver_id}','GetController@getinviationdatainfo');
+Route::get('/Invitationdataget/{user_id}','GetController@getinviationdatainfo');
