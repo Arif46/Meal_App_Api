@@ -46,8 +46,8 @@ Route::get('/Getgroupuser/{phone_number}','GetController@getgroupuserphonenumber
 
 //group invitaion
 Route::post('/Groupinvitation','MainController@invitaioncreate');
-Route::get('/Senderinfo/{sender_id}','GetController@getsenderinfo');
-Route::get('/Receiverinfo/{receiver_id}','GetController@getreceiverinfo');
-Route::get('/GroupInviationStatusChange/{id}','GetController@getstatuschange');
+// Route::get('/Senderinfo/{sender_id}','GetController@getsenderinfo');
+// Route::get('/Receiverinfo/{receiver_id}','GetController@getreceiverinfo');
+Route::get('/GroupInviationStatusUpdate/{id}','GetController@getstatuschange');
 
-Route::get('/Invitationdataget/{group_id}','GetController@getinviationdatainfo');
+Route::get('/Invitationdataget/{group_id}/{sender_id}/{receiver_id}','GetController@getinviationdatainfo');

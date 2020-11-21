@@ -232,11 +232,18 @@ class GetController extends Controller
 
     }
 
-    public function getinviationdatainfo(Request $request,$group_id)
+    public function getinviationdatainfo($group_id,$sender_id,$receiver_id)
     {
-        $inviationdata=Inviation::where('group_id',$group_id)->where('sender_id',$request->sende_id)->get();
+        $inviationdata=Inviation::where('group_id',$group_id)
+        ->where('sender_id',$sender_id)
+        ->where('receiver_id',$receiver_id)
+        ->get();
 
-       
+        if(sizeof($inviationdata) > 0){
+            return response()->json(['Success'=>'true','Inviationdata'=>$inviationdata],200);
+        }else{
+            return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+        }
 
     }
         
