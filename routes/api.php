@@ -51,3 +51,7 @@ Route::post('/Groupinvitation','MainController@invitaioncreate');
 Route::post('/GroupInviationStatusUpdate/{id}','GetController@updatestatuschange');
 
 Route::get('/Invitationdataget/{user_id}','GetController@getinviationdatainfo');
+
+//groupactive user
+
+Route::get('/GroupActive/{phone_number}','GetController@getactiveuser');
