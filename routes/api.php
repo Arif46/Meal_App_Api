@@ -48,6 +48,6 @@ Route::get('/Getgroupuser/{phone_number}','GetController@getgroupuserphonenumber
 Route::post('/Groupinvitation','MainController@invitaioncreate');
 // Route::get('/Senderinfo/{sender_id}','GetController@getsenderinfo');
 // Route::get('/Receiverinfo/{receiver_id}','GetController@getreceiverinfo');
-Route::get('/GroupInviationStatusUpdate/{id}','GetController@getstatuschange');
+Route::post('/GroupInviationStatusUpdate/{id}','GetController@updatestatuschange');
 
 Route::get('/Invitationdataget/{user_id}','GetController@getinviationdatainfo');

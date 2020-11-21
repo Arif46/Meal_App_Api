@@ -191,14 +191,23 @@ class GetController extends Controller
 
     }
 
-    public function getstatuschange($id)
+    public function updatestatuschange(Request $request,$id)
     {
+
+         // $Updatestatus=Inviation::find($id);
+        // if($Updatestatus->status){
+        //     $Updatestatus->status = 0;
+        // }else{
+        //     $Updatestatus->status = 1;
+        // }
+        // if($Updatestatus->save()){
+        //     return response()->json(['success'=>'Inviation status change Sucessfully'],200);
+        // }else{
+        //     return response()->json(['error'=>'Inviation status change Unsucessfull'],400);
+        // }
+       
         $Updatestatus=Inviation::find($id);
-        if($Updatestatus->status){
-            $Updatestatus->status = 0;
-        }else{
-            $Updatestatus->status = 1;
-        }
+         $Updatestatus->status=$request->status;             
         if($Updatestatus->save()){
             return response()->json(['success'=>'Inviation status change Sucessfully'],200);
         }else{
@@ -236,7 +245,7 @@ class GetController extends Controller
     {
         $inviationdata=Inviation::
           where('sender_id','=',$user_id)
-        ->where('receiver_id','=',$user_id)
+        ->orwhere('receiver_id','=',$user_id)
         ->with('groupinfo')
         ->with('SenderInfo')
         ->with('ReceiverInfo')
