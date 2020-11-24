@@ -24,7 +24,7 @@ class GroupMember extends Model
  }
  public function ActiveGroup()
  {
-    return $this->belongsTo('App\Group','group_id','id');
+    return $this->hasMany('App\Group','id','group_id');
  }
 
 

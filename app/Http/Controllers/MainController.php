@@ -178,8 +178,8 @@ class MainController extends Controller
     public function groupmemberinsert(Request $request)
     {
        $groupcreate = Validator::make($request->all(),[
-           'group_id' => 'required|exists:groups,id|unique:groups,id',
-           'phone_number' => 'required|exists:users,phone_number|unique:users,phone_number',
+           'group_id' => 'required|exists:groups,id',
+           'phone_number' => 'required|exists:users,phone_number|unique:group_members,phone_number',
         //    'default_input' =>'required|string',     
        ]);
 
@@ -272,7 +272,7 @@ class MainController extends Controller
     public function invitaioncreate(Request $req)
     {
 
-        $validator = Validator::make($req->all(),[
+        \$validator = Validator::make($req->all(),[
             'group_id' => 'required|exists:groups,id',
             'sender_id' => 'required',
             'receiver_id' =>'required',

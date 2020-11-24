@@ -256,19 +256,23 @@ class GetController extends Controller
         }else{
             return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
         }
+
     }
+
     public function getactiveuser($phone_number)
     {
-        $activegroupmember=GroupMember::where('phone_number',$phone_number)->with('ActiveGroup')->get();
-        if (sizeof($activegroupmember) > 0) {
-            return response()->json(['Success'=>'true','Activegroup'=>$activegroupmember],200);
-        }else{
-            return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+
+        $members = DB::table('group_members')->where('phone_number', $phone_number)->get();
+        $groupInfo = [];
+        
+        foreach($members as $item) {
+            $groupInfo[] = DB::table('groups')->find($item->group_id);
         }
 
+    
+        return response()->json(['Success'=>'true','Active_group'=>$groupInfo],200);
     }
         
 
-  
   
 }

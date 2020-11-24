@@ -22,6 +22,8 @@ class Inviation extends Model
     }
     public function ReceiverInfo()
     {
-        return $this->hasMany('App\User','id','receiver_id');
+        return $this->hasMany('App\User::class','id','receiver_id');
     }
+
+  
 }
