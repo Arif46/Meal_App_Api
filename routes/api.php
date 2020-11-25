@@ -28,7 +28,8 @@ Route::get('/UserMealDate/{date}','GetController@getusermealdate');
 Route::get('/getalluser','GetController@GetallUser');
 Route::get('/Group_search/{keyword}','GetController@Searchgroup');
 Route::get('/Member_search/{keyword}','GetController@Membergroup');
-Route::get('/Daily_meal_input/{group_id}/{from}/{to}','GetController@getdailymealinput');
+
+Route::get('/Daily_meal_input/{group_id}','GetController@getdailymealinput');
 
 //bazar add
 Route::post('/BazarInsert','MainController@bazarcreate');
@@ -55,3 +56,6 @@ Route::get('/Invitationdataget/{user_id}','GetController@getinviationdatainfo');
 //groupactive user
 
 Route::get('/GroupActive/{phone_number}','GetController@getactiveuser');
+
+//user_meal_input
+Route::get('/User_Meal_Total/{group_id}/{from}/{to}','GetController@gettotalusermeal');

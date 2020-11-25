@@ -216,13 +216,9 @@ class GetController extends Controller
        
 
     }
-    public function getdailymealinput (
-    $group_id,
-    $from,
-    $to
-    )
+    public function getdailymealinput ($group_id)
     {
-        $dailymealinputdata =DailyMealInput::where('group_id',$group_id)->whereBetween('created_at', [$from.' 00:00:00',$to.' 23:59:59'])->get();
+        $dailymealinputdata =DailyMealInput::where('group_id',$group_id)->get();
         if(sizeof($dailymealinputdata) > 0){
             return response()->json(['Success'=>'true','Dailymealinputdata'=>$dailymealinputdata],200);
         }else{
@@ -262,6 +258,13 @@ class GetController extends Controller
     public function getactiveuser($phone_number)
     {
 
+      // $activegroupmember=GroupMember::where('phone_number',$phone_number)->with('ActiveGroup')->get();
+        // if (sizeof($activegroupmember) > 0) {
+        //     return response()->json(['Success'=>'true','Activegroup'=>$activegroupmember],200);
+        // }else{
+        //     return response()->json(['Success'=>'false','message'=>'Data Not Found'],400);
+        // }
+
         $members = DB::table('group_members')->where('phone_number', $phone_number)->get();
         $groupInfo = [];
         
@@ -272,6 +275,18 @@ class GetController extends Controller
     
         return response()->json(['Success'=>'true','Active_group'=>$groupInfo],200);
     }
+
+    public function gettotalusermeal( $group_id, $from, $to)
+    {
+        $gettotalmeal=UserMealDate::where('group_id',$group_id)->whereBetween('meal_date', [$from.' 00:00:00',$to.' 23:59:59'])->get(); 
+        $gettotalmealcount=$gettotalmeal->count();
+        return response()->json(['success'=>'true','Date_Meal'=>$gettotalmeal,'total_meal'=>$gettotalmealcount],200); 
+
+    }
+
+   
+
+ 
         
 
   
