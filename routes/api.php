@@ -59,3 +59,7 @@ Route::get('/GroupActive/{phone_number}','GetController@getactiveuser');
 
 //user_meal_input
 Route::get('/User_Meal_Total/{group_id}/{from}/{to}','GetController@gettotalusermeal');
+
+//user meal update
+
+Route::post('/User_meal_update/{meal_date}','UpdateController@usermealupdate');
