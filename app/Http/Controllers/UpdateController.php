@@ -201,38 +201,35 @@ class UpdateController extends Controller
 
       public function usermealupdate(Request $r, $meal_date)
       { 
-        $user_meal = Validator::make($r->all(),[
-            'group_id' => 'required|exists:groups,id',
-            'user_id' => 'required|exists:users,id',
-            'phone_number' => 'required|exists:users,phone_number',
-            'meal_date' =>'required|date_format:Y-m-d',
-            'is_breakfast' => 'sometimes|nullable',
-            'is_lunch' =>'sometimes|nullable',
-            'is_dinner' => 'sometimes|nullable',
-           ]) ;
-     
-           if($user_meal->fails()){
-               return response()->json([$user_meal->errors()],400);
-     
-           }
-     
-           $user_meal_update=UserMealDate::find($meal_date);
-           $user_meal_update->group_id=$r->group_id;
-           $user_meal_update->user_id=$r->user_id;
-           $user_meal_update->phone_number=$r->phone_number;
-           $user_meal_update->meal_date =$r->meal_date;
+         
+           $user_meal_update=UserMealDate::where('meal_date',$meal_date)->first();
            $user_meal_update->is_breakfast =$r->is_breakfast;
            $user_meal_update->is_lunch =$r->is_lunch;
            $user_meal_update->is_dinner =$r->is_dinner;
      
-     
-           if($user_meal_update->save()){
+           if ($user_meal_update->save()) {
      
              return response()->json(['success' =>'true' ,'message' =>'User Meal Update Successfully '],200);
-         }else{
+          }else{
              return response()->json(['success' =>'false','message' =>'Something went Wrong!'],400);
          }
-     
+      }
+
+      public function getupdateisactivefield(Request $request, $phone_number)
+      {
+           
+         $active_update=User::where('phone_number',$phone_number)->first();
+         $active_update->active_groupid=$request->active_groupid;
+         if($active_update->save()) {
+            return response([
+                'success'=>'true',
+                 'statuscode'=>200,
+                  'message'=>'active is sucessfully updated'
+            ],200);
+         }
+        
+        
+          
       }
          
 
