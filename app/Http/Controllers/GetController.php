@@ -139,23 +139,18 @@ class GetController extends Controller
         }
      
     }
-    public function getallbazarlist(
-        $group_id,
-        $from,
-        $to
-
-    )
+    public function getallinfo( $group_id, $from, $to )
     {
-        $allbazarlist=Bazar::where('group_id',$group_id)->whereBetween('date', [$from.' 00:00:00',$to.' 23:59:59'])->with('allpayables')->with('user_meal')->with('DailyMealInput')->get();
-        
-        if (sizeof($allbazarlist) > 0) {
-
-            return response()->json(['Success'=>'true','Allbazarlist'=>$allbazarlist],200);
-
-        }else{
-            return response()->json(['success'=>'false','message'=>'Something went Wrong'],400);
-        }
-
+        $allinfo=GroupMember::where('group_id',$group_id)
+        ->with('allpayables')
+        ->with('DailyMealInput')
+        ->with('PostMonthPricing')
+        ->with('PreeMonthPricing')
+        ->get(); 
+        $usermeal=UserMealDate::where('group_id',$group_id)
+           ->whereBetween('meal_date', [$from.' 00:00:00',$to.' 23:59:59'])->get();
+        return response()->json(['allinfo'=>$allinfo,'UserMeal'=>$usermeal],200);
+      
     }
   
 

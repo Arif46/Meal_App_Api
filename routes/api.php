@@ -34,7 +34,9 @@ Route::get('/Daily_meal_input/{group_id}','GetController@getdailymealinput');
 //bazar add
 Route::post('/BazarInsert','MainController@bazarcreate');
 Route::get('/Bazarlist/{group_id}/{from}/{to}','GetController@Getbazarlist');
-Route::get('/GetAllBazarlist/{group_id}/{from}/{to}','GetController@getallbazarlist');
+
+Route::get('/groupallinfo/{group_id}/{from}/{to}','GetController@getallinfo');
+
 Route::post('/BazarUpdate/{id}','UpdateController@bazarupdate');
 //end bazar
 
