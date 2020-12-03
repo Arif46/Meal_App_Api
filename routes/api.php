@@ -62,7 +62,7 @@ Route::get('/User_Meal_Total/{group_id}/{from}/{to}','GetController@gettotaluser
 
 //user meal update
 
-Route::post('/User_meal_update/{meal_date}','UpdateController@usermealupdate');
+Route::post('/User_meal_update/{user_id}/{meal_date}','UpdateController@usermealupdate');
 
 //is active field update
 

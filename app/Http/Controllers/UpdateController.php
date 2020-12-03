@@ -199,20 +199,23 @@ class UpdateController extends Controller
          }
       }
 
-      public function usermealupdate(Request $r, $meal_date)
+      public function usermealupdate(Request $req, $user_id, $meal_date)
       { 
-         
-           $user_meal_update=UserMealDate::where('meal_date',$meal_date)->first();
-           $user_meal_update->is_breakfast =$r->is_breakfast;
-           $user_meal_update->is_lunch =$r->is_lunch;
-           $user_meal_update->is_dinner =$r->is_dinner;
-     
-           if ($user_meal_update->save()) {
-     
+       
+          
+           $user_meal_update=UserMealDate::where('user_id',$user_id)
+           ->where('meal_date',$meal_date)->first();
+      
+           $update=  $user_meal_update->update($req->all());
+
+           if ($update) { 
              return response()->json(['success' =>'true' ,'message' =>'User Meal Update Successfully '],200);
           }else{
              return response()->json(['success' =>'false','message' =>'Something went Wrong!'],400);
-         }
+          }
+          
+        
+      
       }
 
       public function getupdateisactivefield(Request $request, $phone_number)

@@ -272,7 +272,7 @@ class MainController extends Controller
     public function invitaioncreate(Request $req)
     {
 
-        \$validator = Validator::make($req->all(),[
+        $validator = Validator::make($req->all(),[
             'group_id' => 'required|exists:groups,id',
             'sender_id' => 'required',
             'receiver_id' =>'required',

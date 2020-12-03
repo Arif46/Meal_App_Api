@@ -13,6 +13,7 @@ class CreateUserMealDatesTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('user_meal_dates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('group_id');
