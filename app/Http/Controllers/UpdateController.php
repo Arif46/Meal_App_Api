@@ -85,7 +85,7 @@ class UpdateController extends Controller
 
         try{
             $update=Validator::make($request->all(),[
-
+                'full_name'=>'required|string',
                 'email' => 'required|email',
                 'notification_token' => 'sometimes|nullable|string',
                 'image'=>'required|image|mimes:jpg,png,jpeg|max:5000',
@@ -96,9 +96,10 @@ class UpdateController extends Controller
                  return response()->json([$update->errors()],400);
               }
     
-              $userUpdate = new User;
+           
               $imagesNames="";
               $userUpdate=User::findOrFail($id);
+              $userUpdate->full_name =$request->full_name;
               $userUpdate->email = $request->email;
               $userUpdate->notification_token = $request->notification_token;
     

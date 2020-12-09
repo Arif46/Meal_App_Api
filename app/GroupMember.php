@@ -46,6 +46,10 @@ class GroupMember extends Model
          {
             return $this->hasMany('App\PreeMonthPricing','group_id','group_id');
          }
+         public function groupinfo()
+         {
+            return $this->belongsTo('App\Group','group_id','id');
+         }
          
 
   

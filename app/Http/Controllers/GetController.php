@@ -142,6 +142,9 @@ class GetController extends Controller
     public function getallinfo( $group_id, $from, $to )
     {
         $allinfo=GroupMember::where('group_id',$group_id)
+        ->with(['groupinfo' => function($query) {
+            return $query->select(['id','group_name']);
+        }])
         ->with('allpayables')
         ->with('DailyMealInput')
         ->with('PostMonthPricing')
