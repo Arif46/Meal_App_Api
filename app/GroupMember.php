@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class GroupMember extends Model
 {
+
+      protected $table ="group_members";
+
+      protected $fillable = [
+            'group_id','phone_number','default_input',''
+      ];
 //  public function Admininfo()
 //  {
 //      return $this->hasMany('App\User','phone_number','phone_number');
@@ -50,7 +56,11 @@ class GroupMember extends Model
          {
             return $this->belongsTo('App\Group','group_id','id');
          }
-         
+         public function User()
+         {
+            return $this->hasMany('App\User','phone_number','phone_number');
+         }
+        
 
   
 }

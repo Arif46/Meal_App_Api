@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\User;
+use App\GroupMember;
+use App\Group;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -16,6 +19,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $table = "users";
+
     protected $fillable = [
         'full_nameme','phone_number', 'email','password','notification_token','active_groupid','image'
     ];
@@ -39,4 +45,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    
+
+  
+    
+   
+
 }

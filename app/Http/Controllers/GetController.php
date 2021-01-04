@@ -83,7 +83,7 @@ class GetController extends Controller
 
     }
 
-    public function Searchgroup($keyword)
+    public function Searchgroup(Request $request ,$keyword)
     {
        
         // try{
@@ -103,6 +103,10 @@ class GetController extends Controller
         $groupsearch=Group::where('group_name','LIKE',"%{$keyword}")->with(['admin' => function($query) {
             return $query->select(['group_id','phone_number']);
         }])->withCount('groupmember')->get();
+
+        // if ($request->group_name) {
+        //     $groupsearch=$groupsearch->where('group_name','LIKE',"%{$keyword}");
+        // }
 
         if(sizeof($groupsearch) > 0){
             return response()->json(['message'=>'true','groupsearch'=>$groupsearch],200);  
@@ -282,10 +286,44 @@ class GetController extends Controller
 
     }
 
-   
+    /**
+     * group details
+     */
+    public function getgroupdetails($phone_number)
+    {
+        // $group=User::where('phone_number',$phone_number)->with(['groupMember','group'])->get();
+          
+        //     return response()->json([
+        //         'sucess'=>true,
+        //         'message'=>'Group Details list',
+        //         'GroupDetails'=>$group,
+        //     ]);
+    }
 
- 
+    /**
+     * Update Group Admin
+     */
+    public function updategroupadmin(Request $request, $id)
+    {
         
+        $updatestatus=Group::find($id);
 
+        if (!$updatestatus) {
+            return response([
+                'success' => false,
+                'message' => 'Data not found.'
+            ]);
+        }
+
+        $updatestatus->is_admin = int($request->is_admin);
+        $updatestatus->update();
+
+        return response([
+            'success' => true,
+            'message' => ' Data updated successfully'
+        ]);
+
+    }
+        
   
 }

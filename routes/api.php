@@ -69,3 +69,11 @@ Route::post('/User_meal_update/{user_id}/{meal_date}','UpdateController@usermeal
 //is active field update
 
 Route::post('/active_field_update/{phone_number}','UpdateController@getupdateisactivefield');
+
+//Group Details
+
+Route::get('/group-details/{phone_number}','GetController@getgroupdetails');
+
+//change admin update
+
+Route::post('/update-group-admin/{id}','GetController@updategroupadmin');
