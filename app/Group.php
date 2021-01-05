@@ -32,6 +32,7 @@ class Group extends Model
         return $this->hasMany('App\GroupMember','group_id','id');
     }
    
+
    
   
   

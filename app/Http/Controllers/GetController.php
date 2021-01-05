@@ -149,10 +149,7 @@ class GetController extends Controller
         ->with(['groupinfo' => function($query) {
             return $query->select(['id','group_name']);
         }])
-        ->with('allpayables')
-        ->with('DailyMealInput')
-        ->with('PostMonthPricing')
-        ->with('PreeMonthPricing')
+        ->with(['allpayables','DailyMealInput','PostMonthPricing','PreeMonthPricing'])
         ->get(); 
         $usermeal=UserMealDate::where('group_id',$group_id)
            ->whereBetween('meal_date', [$from.' 00:00:00',$to.' 23:59:59'])->get();
@@ -241,13 +238,12 @@ class GetController extends Controller
 
     public function getinviationdatainfo($user_id)
     {
-        $inviationdata=Inviation::
-          where('sender_id','=',$user_id)
-        ->orwhere('receiver_id','=',$user_id)
-        ->with('groupinfo')
-        ->with('SenderInfo')
-        ->with('ReceiverInfo')
-        ->get();
+        $inviationdata=Inviation::where('sender_id','=',$user_id)
+                            ->orwhere('receiver_id','=',$user_id)
+                            ->with('groupinfo')
+                            ->with('SenderInfo')
+                            ->with('ReceiverInfo')
+                            ->get();
 
         if (sizeof($inviationdata) > 0) {
             return response()->json(['Success'=>'true','Inviationdata'=>$inviationdata],200);
@@ -291,13 +287,30 @@ class GetController extends Controller
      */
     public function getgroupdetails($phone_number)
     {
-        // $group=User::where('phone_number',$phone_number)->with(['groupMember','group'])->get();
-          
-        //     return response()->json([
-        //         'sucess'=>true,
-        //         'message'=>'Group Details list',
-        //         'GroupDetails'=>$group,
-        //     ]);
+
+        $group=User::where('phone_number',$phone_number)->first();
+
+           $group_data=[];
+
+             foreach($group->groupmember as $groupItems){
+                $group_data[]=array(
+                'user_id'=>$group->id,
+                'admin_name'=>$group->full_name,
+                'groupmember_id'=>$groupItems->id,
+                'group_id'=>$groupItems->group_id,
+                'phone_number'=>$groupItems->phone_number,
+                'default_input'=>$groupItems->default_input,
+                'group'=>$groupItems->group_info,
+                );
+             }
+
+             $total_member= collect($group_data)->count();
+
+            return response()->json([
+                'sucess'=>true,
+                'group_details'=>$group_data,
+                'total_group'=>$total_member,
+            ]);
     }
 
     /**
@@ -324,6 +337,32 @@ class GetController extends Controller
         ]);
 
     }
-        
+
+    /**
+     *get group all member 
+    */
+    public function getallgroupmemer($group_id,$from ,$to)
+    {
+        //  $data =GroupMember::where('group_id',$group_id)->with(['userMeal','preemonth','postMonth'])
+        //                      ->where('meal_date', [$from.' 00:00:00',$to.' 23:59:59'])
+        //                      ->get();
+         $data =GroupMember::where('group_id',$group_id)->with('userMeal')
+                             ->where('meal_date', [$from.' 00:00:00',$to.' 23:59:59'])
+                             ->get();
+                if(!$data) {
+                    return response([
+                        'success' => false,
+                        'message' => 'Data Not Found',
+                        
+                    ]);
+                }else {
+                    return response([
+                        'success' => true,
+                        'message' => 'Member List',
+                        'data'    =>$data
+                    ]);
+                }
+                             
+    }    
   
 }

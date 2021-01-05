@@ -60,7 +60,26 @@ class GroupMember extends Model
          {
             return $this->hasMany('App\User','phone_number','phone_number');
          }
-        
 
+         public function preemonth()
+         {
+            return $this->hasMany('App\PreeMonthPricing','group_id','group_id')->selectRaw('sum(breakfast) as breakfast, sum(lunch) as lunch, sum(dinner) as dinner,group_id')->groupBy('group_id');
+         }
+
+         public function postMonth()
+         {
+            return $this->hasMany('App\PostMonthPricing','group_id','group_id')->selectRaw('sum(is_breakfast_half) as breakfast, sum(is_lunch_full) as lunch, sum(is_dinner_full) as dinner,group_id')->groupBy('group_id');
+         }
+        
+         public function userMeal()
+         {
+            return $this->hasMany('App\UserMealDate','group_id','group_id')->selectRaw('sum(is_breakfast) as breakfast, sum(is_lunch) as lunch, sum(is_dinner) as dinner,group_id')->groupBy('group_id');;
+         }
+
+         public function group_info()
+         {
+            return $this->hasMany('App\Group','id','group_id');
+         }
+       
   
 }

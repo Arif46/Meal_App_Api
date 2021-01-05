@@ -74,6 +74,10 @@ Route::post('/active_field_update/{phone_number}','UpdateController@getupdateisa
 
 Route::get('/group-details/{phone_number}','GetController@getgroupdetails');
 
-//change admin update
+//change is admin update
 
 Route::post('/update-group-admin/{id}','GetController@updategroupadmin');
+
+//allgroupmember information
+
+Route::get('/allgroupmember/{group_id}/{from}/{to}','GetController@getallgroupmemer');

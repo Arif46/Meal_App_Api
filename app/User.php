@@ -46,10 +46,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+    public function groupmember()
+    {
+        return $this->hasMany('App\GroupMember','phone_number','phone_number');
+    }
 
-  
-    
+   
    
 
 }
